@@ -10,19 +10,26 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.graphstream.algorithm.generator.Generator;
+import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
+
+import org.graphstream.ui.swingViewer.View;
+import org.graphstream.ui.swingViewer.Viewer;
 
 public class FenetrePrincipale extends JFrame {
 
 	public static void main(String[] args) {
 		
-		Graph graph = new SingleGraph("Tutorial 1");
-		
 		FenetrePrincipale fen = new FenetrePrincipale();
 		fen.setVisible(true);
 		
-		System.out.println(TypeGraph.TORE.toString());
+		int[] params = {3,2};
+		Graph g = FabriqueGraphe.generer(TypeGraph.TORE, params );
+		g.display();
+		
+		//System.out.println(TypeGraph.TORE.toString());
 		
 	}
 	
@@ -36,7 +43,18 @@ public class FenetrePrincipale extends JFrame {
 	
 	public void init() {
         
+		/*
+		int[] params = {1};
+		Graph graph = FabriqueGraphe.generer(TypeGraph.GRAPH, params);
+		Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		// ...
+		View view = viewer.addDefaultView(false);   // false indicates "no JFrame".
+		// ...
+		this.add(view);
+		
 		this.add(new PanneauChoix());
+		*/
+		
         // Réglage taille fenêtre
         this.setSize(800, 500);
 		
