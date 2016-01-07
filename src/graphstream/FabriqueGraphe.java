@@ -18,7 +18,7 @@ public class FabriqueGraphe {
 		
 		case CYCLE: return FabriqueGraphe.createCycle(args[0]);
 			
-		case CHAINE: 
+		case CHAINE: return FabriqueGraphe.createChaine(args[0]);
 			
 		case TORE: return FabriqueGraphe.createTore(args[0]);
 			
@@ -43,13 +43,27 @@ public class FabriqueGraphe {
         graph.addNode("C");
         graph.addEdge("AB", "A", "B");
         graph.addEdge("BC", "B", "C");
-        graph.addEdge("CA", "C", "A");
 		 
 		// Nodes already have a position.
 		graph.display(false);
 		
 		return graph;
 	}
+	
+	public static Graph createChaine(int sommets) {
+		
+		
+		Graph graph = new SingleGraph("Cycle");
+		
+		graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+        graph.addEdge("AB", "A", "B");
+        graph.addEdge("BC", "B", "C");
+        graph.addEdge("AC", "A", "C");
+		
+		return graph;
+	} 
 	
 	public static Graph createGrille(int tailleCote) {
 		
@@ -64,7 +78,7 @@ public class FabriqueGraphe {
 		gen.end();
 		 
 		// Nodes already have a position.
-		graph.display(false);
+		//graph.display(false);
 		
 		return graph;
 	}
@@ -82,7 +96,7 @@ public class FabriqueGraphe {
 		gen.end();
 		 
 		// Nodes already have a position.
-		graph.display(false);
+		//graph.display(false);
 		
 		return graph;
 	}
