@@ -12,7 +12,6 @@ public class FabriqueGraphe {
 
 	public static Graph generer(TypeGraph type, int args[] ) {
 		
-		
 
 		switch ( type ) {
 		
@@ -60,7 +59,6 @@ public class FabriqueGraphe {
         graph.addNode("C");
         graph.addEdge("AB", "A", "B");
         graph.addEdge("BC", "B", "C");
-        graph.addEdge("AC", "A", "C");
 		
 		return graph;
 	} 
