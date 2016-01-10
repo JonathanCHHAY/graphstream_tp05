@@ -27,4 +27,5 @@ public abstract class AbstractBoiteGenGraph extends JDialog {
 	public abstract void redimFen();
 	
 	public abstract int[] showDialog();
+	public abstract void setListeners();
 }

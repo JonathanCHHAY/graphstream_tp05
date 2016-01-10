@@ -23,11 +23,11 @@ public class FabriqueGraphe {
 			
 		case GRILLE: return FabriqueGraphe.createGrille(args[0]);
 			
-		case ANC:
+		case ANC: return null;
 		
 		case GRAPH: return FabriqueGraphe.createGraph(args[0], args[1]);
 			
-		default: return null;
+		default: return new SingleGraph("Vide");
 				
 		}
 	}

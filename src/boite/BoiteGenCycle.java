@@ -2,11 +2,14 @@ package boite;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.graphstream.graph.Graph;
 
@@ -23,6 +26,7 @@ public BoiteGenCycle(JFrame own) {
 		creationElem();
 		placementElem();
 		redimFen();
+		setListeners();
 	}
 	
 	@Override
@@ -30,6 +34,11 @@ public BoiteGenCycle(JFrame own) {
 		
 		//System.out.println("show");
 		this.setVisible(true);
+		
+		super.params = new int[2];
+		params[0] = Integer.parseInt(tf1.getText());
+		params[1] = -1;
+		
 		return params;
 	}
 
@@ -70,5 +79,19 @@ public BoiteGenCycle(JFrame own) {
 	@Override
 		public void redimFen() {
 			this.pack();
+		}
+	
+	@Override
+		public void setListeners() {
+		
+			btValider.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				setVisible(false);				
+			}
+		});
+			
 		}
 }

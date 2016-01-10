@@ -48,7 +48,7 @@ public class FenetrePrincipale extends JFrame {
 		 */
 		 
 		int[] params = {3,2};
-		//Graph g = FabriqueGraphe.generer(TypeGraph.TORE, params );
+		Graph g = FabriqueGraphe.generer(TypeGraph.TORE, params );
 		//g.display();
 		
 		//System.out.println(TypeGraph.TORE.toString());
@@ -57,6 +57,7 @@ public class FenetrePrincipale extends JFrame {
 	
 	private JPanel panoGraph;
 	private PanneauChoix panoChoix;
+	View view;
 	
 	public FenetrePrincipale() {
 
@@ -64,37 +65,49 @@ public class FenetrePrincipale extends JFrame {
 		
 		// Titre fenêtre et fermeture la fenêtre
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        init();
+        creerPanneauGraph(TypeGraph.GRAPH);
+        creerInterfaces();
+        placeElem();
+        redimFen();
         setListeners();
         
 	}
 	
-	public void init() {
-        
+	public void creerPanneauGraph(TypeGraph typeGraph) {
 		
+
 		int[] params = {1, 0};
-		Graph graph = FabriqueGraphe.generer(TypeGraph.CHAINE, params);
+		Graph graph = FabriqueGraphe.generer(typeGraph, params);
+		
 		Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_SWING_THREAD);
 		viewer.enableAutoLayout(); // Active les animations
 		// ...
-		View view = viewer.addDefaultView(false);   // false indicates "no JFrame".
+		view = viewer.addDefaultView(false);   // false indicates "no JFrame".
 		//graph.display();
 		// ...
+	}
+	
+	public void creerInterfaces() {
+		
+		panoChoix = new PanneauChoix();
+	}
+	
+	public void placeElem() {
+		
 		panoGraph.add(view);
 		view.setLocation(0, 0);
 		view.setPreferredSize(new Dimension(500,500));
 		
-		panoChoix = new PanneauChoix();
 		panoGraph.add(panoChoix);
-		panoChoix.setLocation(view.WIDTH, 0);
+		panoChoix.setLocation(panoGraph.WIDTH, 0);
 		
-		
-		this.setContentPane(panoGraph);
-        // Réglage taille fenêtre
-        
-		this.pack();
 		//this.setSize(800, 500);
+	}
+	
+	public void redimFen() {
 		
+		this.setContentPane(panoGraph);        
+		this.pack();
 	}
 	
 	public void setListeners() {
@@ -107,11 +120,23 @@ public class FenetrePrincipale extends JFrame {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(panoChoix);
 				TypeGraph graph = (TypeGraph) ( ( (DefaultComboBoxModel) panoChoix.choixGraphe.getModel() ).getSelectedItem() );
 				AbstractBoiteGenGraph boite = new BoiteGenCycle(topFrame);
-				boite.showDialog();
+				int params[] = boite.showDialog();
 				
+				//System.out.println(params[0]);
+				//System.out.println(params[1]);
 				//System.out.println(graph.toString());
 			}
 		});
+	}
+	
+
+	public void update() {
+		
+		/*
+		Graph graph = FabriqueGraphe.generer(typeGraph, params);
+		panoGraph.removeAll();
+		panoGraph.add(, constraints);
+		*/
 	}
 	
 	public class PanneauChoix extends JPanel {
@@ -137,4 +162,5 @@ public class FenetrePrincipale extends JFrame {
 			
 		}
 	}
+	
 }
