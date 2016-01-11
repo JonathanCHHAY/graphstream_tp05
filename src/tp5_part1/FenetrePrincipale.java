@@ -12,6 +12,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
@@ -25,8 +26,15 @@ import org.graphstream.stream.file.FileSinkImages;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.codec.PngImage;
+
+
 
 /**
  *
@@ -157,7 +165,11 @@ public class FenetrePrincipale extends JFrame {
 
     }
 
+    
+    
     public class PanneauActions extends JPanel {
+    	
+
     	
     	public JButton btExport, btPondere;
     	
@@ -180,42 +192,70 @@ public class FenetrePrincipale extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
-					// Pour créer un png depuis le graphe
-					String pngFile = new String("imageGenere.png");
+					String pngFile = genereImage();
+					Document document = genererPdf();
 					
-					FileSinkImages pic = new FileSinkImages(FileSinkImages.OutputType.PNG,
-					FileSinkImages.Resolutions.VGA);
-					
-					pic.setLayoutPolicy(FileSinkImages.LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
-					try {
-						pic.writeAll(grapheCourant, pngFile);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					
-					/*
-					//pngFile est une variable de type String, grapheCourant est un Graph
-					//pour créer une image qui sera ajoutable au pdf:
-					
-					Image convertBmp;
-					try {
-						convertBmp = PngImage.getImage(pngFile);
-						
-						//Redimensionner l’image
-						int PAGE_LEFT_MARGIN = 0;
-						int PAGE_RIGHT_MARGIN = 75;
-						int PAGE_TOP_MARGIN = 0;
-						int PAGE_BOTTOM_MARGIN = 0;
-						convertBmp.scaleToFit(400, 300);
-						
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					*/
 				}
 			});
+    	}
+    	
+
+		// Pour créer un png depuis le graphe
+    	public String genereImage() {
+    		
+    		String pngFile = new String("imageGenere.png");
+			
+			FileSinkImages pic = new FileSinkImages(FileSinkImages.OutputType.PNG,
+			FileSinkImages.Resolutions.VGA);
+			
+			pic.setLayoutPolicy(FileSinkImages.LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+			try {
+				pic.writeAll(grapheCourant, pngFile);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//pngFile est une variable de type String, grapheCourant est un Graph
+			
+			//pour créer une image qui sera ajoutable au pdf:
+			Image convertBmp;
+			try {
+				convertBmp = PngImage.getImage(pngFile);
+				
+				//Redimensionner l’image
+				int PAGE_LEFT_MARGIN = 0;
+				int PAGE_RIGHT_MARGIN = 75;
+				int PAGE_TOP_MARGIN = 0;
+				int PAGE_BOTTOM_MARGIN = 0;
+				convertBmp.scaleToFit(400, 300);
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			return pngFile;
+    	}
+    	
+    	public Document genererPdf() {
+    		
+    		Document document = new Document(PageSize.A4);
+    		try {
+    			PdfWriter.getInstance(document,
+    					new FileOutputStream("./test.pdf"));
+    			document.open();
+    			document.add(new Paragraph("Hello World"));
+    		} catch (DocumentException de) {
+    			de.printStackTrace();
+    		} catch (IOException ioe) {
+    			ioe.printStackTrace();
+    		}
+
+    		document.close();
+    		
+
+        	return document;
     	}
     	
     }
