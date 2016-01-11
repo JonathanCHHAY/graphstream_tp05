@@ -6,11 +6,14 @@
 package tp5_part1;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -18,8 +21,12 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.graphstream.graph.Graph;
+import org.graphstream.stream.file.FileSinkImages;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
+
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.codec.PngImage;
 
 /**
  *
@@ -151,6 +158,66 @@ public class FenetrePrincipale extends JFrame {
     }
 
     public class PanneauActions extends JPanel {
+    	
+    	public JButton btExport, btPondere;
+    	
+    	public PanneauActions() {
+    		this.setBorder(BorderFactory.createTitledBorder("Actions"));
+    		
+    		btExport = new JButton("Export PDF");
+    		btPondere = new JButton("Pondérer");
+    		
+    		this.add(btExport);
+    		this.add(btPondere);
+    		
+    		setActionListeners();
+		}
+    	
+    	public void setActionListeners() {
+    		
+    		btExport.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					// Pour créer un png depuis le graphe
+					String pngFile = new String("imageGenere.png");
+					
+					FileSinkImages pic = new FileSinkImages(FileSinkImages.OutputType.PNG,
+					FileSinkImages.Resolutions.VGA);
+					
+					pic.setLayoutPolicy(FileSinkImages.LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+					try {
+						pic.writeAll(grapheCourant, pngFile);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					/*
+					//pngFile est une variable de type String, grapheCourant est un Graph
+					//pour créer une image qui sera ajoutable au pdf:
+					
+					Image convertBmp;
+					try {
+						convertBmp = PngImage.getImage(pngFile);
+						
+						//Redimensionner l’image
+						int PAGE_LEFT_MARGIN = 0;
+						int PAGE_RIGHT_MARGIN = 75;
+						int PAGE_TOP_MARGIN = 0;
+						int PAGE_BOTTOM_MARGIN = 0;
+						convertBmp.scaleToFit(400, 300);
+						
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					*/
+				}
+			});
+    	}
+    	
     }
 
     public class PanneauAlgorithmes extends JPanel {
