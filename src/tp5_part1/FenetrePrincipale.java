@@ -7,6 +7,7 @@ package tp5_part1;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,14 +27,20 @@ import org.graphstream.stream.file.FileSinkImages;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.codec.PngImage;
+import com.itextpdf.text.Font;
 
+import org.graphstream.algorithm.Toolkit;
 
 
 /**
@@ -192,9 +199,8 @@ public class FenetrePrincipale extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 
-					String pngFile = genereImage();
-					Document document = genererPdf();
-					
+					String image = genereImage();
+					Document pdf = genererPdf(image);
 				}
 			});
     	}
@@ -209,6 +215,7 @@ public class FenetrePrincipale extends JFrame {
 			FileSinkImages.Resolutions.VGA);
 			
 			pic.setLayoutPolicy(FileSinkImages.LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+			
 			try {
 				pic.writeAll(grapheCourant, pngFile);
 			} catch (IOException e1) {
@@ -238,14 +245,30 @@ public class FenetrePrincipale extends JFrame {
 			return pngFile;
     	}
     	
-    	public Document genererPdf() {
+    	public Document genererPdf(String image) {
     		
     		Document document = new Document(PageSize.A4);
     		try {
     			PdfWriter.getInstance(document,
-    					new FileOutputStream("./test.pdf"));
+    					new FileOutputStream("./graph.pdf"));
+    			
+
     			document.open();
-    			document.add(new Paragraph("Hello World"));
+    			
+    			Chunk title = new Chunk("Information sur le graphe\n",
+						FontFactory.getFont(
+								FontFactory.COURIER,
+								20,
+								Font.UNDERLINE)
+						) ;
+    			
+    			//Phrase nom = new Phrase("Nom :" + grapheCourant.get);
+    			
+    			document.add(
+    					new Paragraph( title )
+    					);
+    			//document.add(new Par);
+    			
     		} catch (DocumentException de) {
     			de.printStackTrace();
     		} catch (IOException ioe) {
